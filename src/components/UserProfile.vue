@@ -1,64 +1,38 @@
 <template>
-  <div class='user-profile'>
-    <div class='user-profile__user-panel'>
-        <h1 class='user-profile__username'>@{{ user.username }}</h1>
-        <div class='user-profile__admin-badge' v-if='user.isAdmin'>
-            admin
-        </div>
-        <div class='user-profile__follower-count'>
-            <strong>Followers: </strong> {{ followers }}
-        </div>
-        <form class='user-profile__create-twoot' @submit.prevent='createNewTwoot' :class='{ "--exceeded": newTwootCharacterCount > 180 }'>
-            <label for='newTwoot'>
-                <strong>New Twoot</strong>
-                ({{ newTwootCharacterCount }}/180)
-            </label>
-            <textarea id='newTwoot' rows='4' v-model='newTwootContent'></textarea>
-            
-            <div class='user-profile__create-twoot-type'>
-                <label for='newTwootType'><strong>
-                    Type: 
-                </strong></label>
-                <select id='newTwootType' v-model='selectedTwootType'>
-                    <option :value='option.value' v-for='(option, index) in twootTypes' :key='index'>
-                        {{ option.name }}
-                    </option>
-                </select>
+    <div class='user-profile'>
+        <div class='user-profile__sidebar'>
+            <div class='user-profile__user-panel'>
+                <h1 class='user-profile__username'>@{{ state.user.username }}</h1>
+                <div class='user-profile__admin-badge' v-if='state.user.isAdmin'>
+                    Admin
+                </div>
+                <div class='user-profile__follower-count'>
+                    <strong>Follower: </strong> {{ state.followers }}
+                </div>
             </div>
-
-            <div>
-                <button>
-                    Twoot!
-                </button>
-            </div>
-        </form>
+            <CreateTwootPanel @add-twoot='addTwoot'/>
+        </div>
+        <div class='user-profile__twotts-wrapper'>
+            <TwootItem
+                v-for='twoot in state.user.twoots'
+                :key='twoot.id'
+                :username='state.user.username'
+                :twoot='twoot'
+            />
+        </div>
     </div>
-    <div class='user-profile__twoots-wrapper'>
-        <TwootItem
-            v-for='twoot in user.twoots'
-            :key='twoot.id'
-            :username='user.username'
-            :twoot='twoot'
-            @favourite='toggleFavourite'
-        />
-    </div>
-  </div>
 </template>
 
 <script>
+import { reactive } from 'vue';
 import TwootItem from './TwootItem';
+import CreateTwootPanel from './CreateTwootPanel'
 
 export default {
-    name: 'App',
-    components: { TwootItem },
-    data() {
-        return {
-            newTwootContent: '',
-            selectedTwootType: 'instant',
-            twootTypes: [
-                { value: 'draft', name: 'Draft'},
-                { value: 'instant', name: 'Instant Twoot'}
-            ],
+    name: 'UserProfile',
+    components: { CreateTwootPanel, TwootItem },
+    setup() {
+        const state = reactive({
             followers: 0,
             user: {
                 id: 1,
@@ -75,39 +49,16 @@ export default {
                     { id: 5, content: 'Bye! :)'}
                 ]
             }
+        })
+    
+        function addTwoot(twoot) {
+            state.user.twoots.unshift({ id: state.user.twoots.lenght + 1, content: twoot});
         }
-    },
-    watch: {
-        followers(newFollowerCount, oldFollowerCount) {
-            if (oldFollowerCount < newFollowerCount) {
-                console.log(`${this.user.username} has gained a follower`)
-            }
+
+        return {
+            state,
+            addTwoot
         }
-    },
-    computed: {
-        newTwootCharacterCount() {
-            return this.newTwootContent.length;
-        }
-    },
-    methods: {
-        followUser() {
-            this.followers++
-        },
-        toggleFavourite(id) {
-            console.log(`Favourited Twoot #${id}`)
-        },
-        createNewTwoot() {
-            if (this.newTwootContent && this.selectedTwootType !== 'draft') {
-                this.user.twoots.unshift( {
-                    id: this.user.twoots.length + 1,
-                    content: this.newTwootContent
-                })
-                this.newTwootContent = ''
-            }
-        }
-    },
-    mounted() {
-        this.followUser();
     }
 }
 </script>
@@ -116,66 +67,36 @@ export default {
 .user-profile {
     display: grid;
     grid-template-columns: 1fr 3fr;
-    width: 100%;
+    grid-gap: 50px;
     padding: 50px 5%;
 
     .user-profile__user-panel {
         display: flex;
         flex-direction: column;
-        margin-right: 50px;
         padding: 20px;
         background-color: white;
         border-radius: 5px;
-        border: 1px solid #dfe3e8;
-    
+        border: 1px solid #2c3e50;
+        margin-bottom:  auto;
+
         h1 {
             margin: 0;
         }
 
         .user-profile__admin-badge {
-            background: cadetblue;
+            background: darkcyan;
             color: white;
             border-radius: 5px;
-            margin-right: auto;
-            padding: 0 10px;
+            margin: 5px auto 5px 5px;
+            padding: 1px 10px;
             font-weight: bold;
-        }
-
-        .user-profile__follower-count {
-            padding-bottom: 10px;
-        }
-
-        .user-profile__create-twoot {
-            border-top: 1px solid #dfe3e8;
-            padding-top: 10px;
-            display: flex;
-            flex-direction: column;
-
-            &.--exceeded {
-                color: rgb(189, 0, 0);
-                border-color: rgb(189, 0, 0);
-
-                button {
-                    background-color: rgb(54, 54, 54);
-                    color: lightgray;
-                    
-                }
-            }
-
-            .user-profile__create-twoot-type {
-                padding: 5px;
-            }
-
-            button {
-                padding: 5px;
-            }
         }
     }
 
     .user-profile__twoots-wrapper {
         display: grid;
         grid-gap: 10px;
+        margin-bottom: auto;
     }
 }
-
 </style>

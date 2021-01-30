@@ -24,11 +24,6 @@ export default {
             required: true
         }
     },
-    methods: {
-        favouriteTwoot(id) {
-            this.$emit('favourite', id)
-        }
-    }
 };
 </script>
 
@@ -37,7 +32,7 @@ export default {
     padding: 20px;
     background-color: white;
     border-radius: 5px;
-    border: 1px solid #dfe3e8;
+    border: 1px solid #7aabdb70;
     box-sizing: border-box;
     cursor: pointer;
     transition: all 0.25s ease;
