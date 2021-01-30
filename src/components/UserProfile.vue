@@ -25,9 +25,11 @@
                 </select>
             </div>
 
-            <button>
-                Twoot!
-            </button>
+            <div class='user-profile__create-twoot-button'>
+                <button>
+                    Twoot!
+                </button>
+            </div>
         </form>
     </div>
     <div class='user-profile__twoots-wrapper'>
@@ -109,50 +111,59 @@ export default {
 }
 </script>
 
-<style>
+<style lang='scss' scoped>
 .user-profile {
     display: grid;
     grid-template-columns: 1fr 3fr;
     width: 100%;
     padding: 50px 5%;
+
+    .user-profile__user-panel {
+        display: flex;
+        flex-direction: column;
+        margin-right: 50px;
+        padding: 20px;
+        background-color: white;
+        border-radius: 5px;
+        border: 1px solid #dfe3e8;
+    
+        h1 {
+            margin: 0;
+        }
+
+        .user-profile__admin-badge {
+            background: cadetblue;
+            color: white;
+            border-radius: 5px;
+            margin-right: auto;
+            padding: 0 10px;
+            font-weight: bold;
+        }
+
+        .user-profile__follower-count {
+            padding-bottom: 10px;
+        }
+
+        .user-profile__create-twoot {
+            border-top: 1px solid #dfe3e8;
+            padding-top: 10px;
+            display: flex;
+            flex-direction: column;
+
+            .user-profile__create-twoot-type {
+                padding: 5px;
+            }
+
+            .user-profile__create-twoot-button {
+                padding: 5px;
+            }
+        }
+    }
+
+    .user-profile__twoots-wrapper {
+        display: grid;
+        grid-gap: 10px;
+    }
 }
 
-.user-profile__user-panel {
-    display: flex;
-    flex-direction: column;
-    margin-right: 50px;
-    padding: 20px;
-    background-color: white;
-    border-radius: 5px;
-    border: 1px solid #dfe3e8
-}
-
-.user-profile__admin-badge {
-    background: cadetblue;
-    color: white;
-    border-radius: 5px;
-    margin-right: auto;
-    padding: 0 10px;
-    font-weight: bold;
-}
-
-.user-profile__follower-count {
-    padding-bottom: 10px;
-}
-
-h1 {
-    margin: 0;
-}
-
-.user-profile__twoots-wrapper {
-    display: grid;
-    grid-gap: 10px;
-}
-
-.user-profile__create-twoot {
-    border-top: 1px solid #dfe3e8;
-    padding-top: 10px;
-    display: flex;
-    flex-direction: column;
-}
 </style>
