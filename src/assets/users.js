@@ -21,7 +21,9 @@ export const users = [
         "lastName": "Smith",
         "email": "iamlegend@mail.com",
         "isAdmin": false,
-        "twoots": []
+        "twoots": [
+            { "id": 1, "content": "That's hot!"}
+        ]
     },
     {
         "id": 3,
@@ -31,7 +33,7 @@ export const users = [
         "email": "terminateme@mail.com",
         "isAdmin": false,
         "twoots": [
-            { "id": 1, "content": "I'm back!"}
+            { "id": 1, "content": "I'm back."}
         ]
     },
     {
@@ -42,7 +44,7 @@ export const users = [
         "email": null,
         "isAdmin": false,
         "twoots": [
-            { "id": 1, "content": "inevitable"},
+            { "id": 1, "content": "inevitable..."},
             { "id": 2, "content": "Where are you Jarvis?"}
         ]
     }
